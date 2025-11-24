@@ -116,7 +116,7 @@ const App: React.FC = () => {
           user={currentUser}
           onStartGlobal={() => startQuiz('GLOBAL_CHALLENGE')}
           onStartMini={() => startQuiz('MINI_CHALLENGE')}
-          onStartSubject={(subject) => startQuiz('MINI_CHALLENGE', subject)}
+          onStartSubject={(subject) => startQuiz('MINI_CHALLENGE', subject || undefined)}
           onOpenReport={() => setView(AppView.REPORT)}
         />
       )}

@@ -6,7 +6,7 @@ interface HomeProps {
   user: User;
   onStartGlobal: () => void;
   onStartMini: () => void;
-  onStartSubject: (subject: string) => void;
+  onStartSubject: (subject: string | null) => void;
   onOpenReport: () => void;
 }
 
@@ -81,7 +81,7 @@ export const Home: React.FC<HomeProps> = ({ user, onStartGlobal, onStartMini, on
 
       <h3 className="font-bold text-lg text-gray-800 mb-4">Treinar por Área</h3>
       
-      <div className="grid grid-cols-2 gap-3 mb-8">
+      <div className="grid grid-cols-2 gap-3 mb-3">
         {subjects.map((sub) => (
           <button 
             key={sub.id}
@@ -94,7 +94,19 @@ export const Home: React.FC<HomeProps> = ({ user, onStartGlobal, onStartMini, on
         ))}
       </div>
 
-      <h3 className="font-bold text-lg text-gray-800 mb-4">Modos de Desafio</h3>
+      {/* Simulado Geral Button */}
+      <button 
+        onClick={() => onStartSubject(null)}
+        className="w-full p-4 mb-8 rounded-2xl border border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100 flex items-center justify-center gap-3 transition-all active:scale-95 hover:shadow-md hover:bg-gray-50"
+      >
+        <span className="text-2xl">🎲</span>
+        <div className="text-left">
+            <span className="block text-gray-800 font-bold text-sm">Simulado Geral</span>
+            <span className="block text-gray-500 text-xs">Mistura de todas as matérias</span>
+        </div>
+      </button>
+
+      <h3 className="font-bold text-lg text-gray-800 mb-4">Desafios Especiais</h3>
 
       <div className="grid grid-cols-1 gap-5">
         {/* Global Challenge Card */}
@@ -111,22 +123,6 @@ export const Home: React.FC<HomeProps> = ({ user, onStartGlobal, onStartMini, on
           <h4 className="font-bold text-gray-900 text-lg mb-1">Desafio Global</h4>
           <p className="text-gray-500 text-sm mb-4">Simulado completo com questões reais dos últimos 5 anos. Competição nacional.</p>
           <Button fullWidth variant="primary" className="text-sm">Iniciar Agora</Button>
-        </div>
-
-        {/* Mini Challenge Card */}
-        <div 
-          onClick={onStartMini}
-          className="bg-white rounded-2xl p-5 border-2 border-transparent hover:border-orange-100 shadow-sm hover:shadow-md transition-all cursor-pointer group"
-        >
-           <div className="flex items-start justify-between mb-3">
-             <div className="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                ⚡
-             </div>
-             <span className="bg-orange-50 text-orange-700 text-[10px] font-bold px-2 py-1 rounded uppercase">IA Generated</span>
-          </div>
-          <h4 className="font-bold text-gray-900 text-lg mb-1">Mini Desafio Rápido</h4>
-          <p className="text-gray-500 text-sm mb-4">Questões geradas por IA de todas as matérias. Ganhe XP rápido.</p>
-          <Button fullWidth variant="secondary" className="text-sm">Jogar Rápido</Button>
         </div>
       </div>
     </div>

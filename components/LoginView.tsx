@@ -26,7 +26,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
     <div className="min-h-screen bg-gradient-to-b from-primary-600 to-primary-900 flex items-center justify-center p-6">
       <div className="bg-white w-full rounded-3xl p-8 shadow-2xl animate-fade-in">
         <div className="text-center mb-8">
-            <h1 className="text-3xl font-black text-primary-700 mb-2">ENEM Master</h1>
+            <h1 className="text-3xl font-black text-primary-700 mb-2">Questify</h1>
             <p className="text-gray-500 text-sm">Sua aprovação começa aqui.</p>
         </div>
 
