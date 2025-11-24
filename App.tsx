@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { AppView, Question, User } from './types';
 import { STATIC_QUESTIONS, MOCK_USERS } from './constants';
@@ -7,6 +8,9 @@ import { QuizView } from './components/QuizView';
 import { LoginView } from './components/LoginView';
 import { PremiumModal } from './components/PremiumModal';
 import { ReportView } from './components/ReportView';
+import { StudyPlanView } from './components/StudyPlanView';
+import { EssayCorrectionView } from './components/EssayCorrectionView';
+import { EssayCreditModal } from './components/EssayCreditModal';
 
 const App: React.FC = () => {
   const [view, setView] = useState<AppView>(AppView.LOGIN);
@@ -16,8 +20,11 @@ const App: React.FC = () => {
   
   // User State
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  
+  // Modals
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [premiumReason, setPremiumReason] = useState<'LIMIT_REACHED' | 'REPORT_LOCKED'>('LIMIT_REACHED');
+  const [showEssayCreditModal, setShowEssayCreditModal] = useState(false);
 
   const handleLogin = (name: string, isGoogle: boolean) => {
     // Mock login logic
@@ -38,7 +45,7 @@ const App: React.FC = () => {
   const startQuiz = (mode: 'GLOBAL_CHALLENGE' | 'MINI_CHALLENGE', subject?: string) => {
     if (!currentUser) return;
 
-    // PAYWALL CHECK
+    // PAYWALL CHECK for Free Users
     if (!currentUser.isPremium && currentUser.questionsAnswered >= 20) {
         setPremiumReason('LIMIT_REACHED');
         setShowPremiumModal(true);
@@ -78,12 +85,27 @@ const App: React.FC = () => {
   };
 
   const handleUpgrade = () => {
-    // Simulate payment
+    // Simulate payment subscription
     if (currentUser) {
         setCurrentUser({ ...currentUser, isPremium: true });
         setShowPremiumModal(false);
         alert('Parabéns! Você agora é Premium! 👑');
     }
+  };
+
+  const handleBuyCredits = (amount: number) => {
+      // Simulate credit purchase
+      if (currentUser) {
+          setCurrentUser({ ...currentUser, essayCredits: currentUser.essayCredits + amount });
+          setShowEssayCreditModal(false);
+          alert(`Você comprou ${amount} créditos de redação!`);
+      }
+  };
+
+  const handleConsumeCredit = () => {
+      if (currentUser) {
+          setCurrentUser({ ...currentUser, essayCredits: Math.max(0, currentUser.essayCredits - 1) });
+      }
   };
 
   const NavItem = ({ icon, label, targetView }: { icon: React.ReactNode, label: string, targetView: AppView }) => (
@@ -103,11 +125,19 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 font-sans max-w-md mx-auto relative shadow-2xl overflow-hidden">
       
+      {/* Subscription Modal */}
       <PremiumModal 
         isOpen={showPremiumModal} 
         onClose={() => setShowPremiumModal(false)} 
         onUpgrade={handleUpgrade}
         reason={premiumReason}
+      />
+
+      {/* Credit Purchase Modal */}
+      <EssayCreditModal 
+        isOpen={showEssayCreditModal}
+        onClose={() => setShowEssayCreditModal(false)}
+        onBuy={handleBuyCredits}
       />
 
       {/* Screen Router */}
@@ -118,6 +148,8 @@ const App: React.FC = () => {
           onStartMini={() => startQuiz('MINI_CHALLENGE')}
           onStartSubject={(subject) => startQuiz('MINI_CHALLENGE', subject || undefined)}
           onOpenReport={() => setView(AppView.REPORT)}
+          onOpenStudyPlan={() => setView(AppView.STUDY_PLAN)}
+          onOpenEssay={() => setView(AppView.ESSAY)}
         />
       )}
 
@@ -133,6 +165,26 @@ const App: React.FC = () => {
                 setShowPremiumModal(true);
             }}
         />
+      )}
+
+      {view === AppView.STUDY_PLAN && currentUser && (
+        <StudyPlanView
+            isPremium={currentUser.isPremium}
+            onUpgradeClick={() => {
+                setPremiumReason('REPORT_LOCKED'); // Reusing reason for simplicity
+                setShowPremiumModal(true);
+            }}
+            onBack={() => setView(AppView.HOME)}
+        />
+      )}
+
+      {view === AppView.ESSAY && currentUser && (
+          <EssayCorrectionView 
+            credits={currentUser.essayCredits}
+            onBuyCredits={() => setShowEssayCreditModal(true)}
+            onBack={() => setView(AppView.HOME)}
+            onConsumeCredit={handleConsumeCredit}
+          />
       )}
 
       {/* Quiz covers the whole screen, no nav bar */}
@@ -165,7 +217,7 @@ const App: React.FC = () => {
            <div className="flex-1 h-full">
             <NavItem 
               targetView={AppView.REPORT} 
-              label="Relatório IA" 
+              label="Mentor" 
               icon={
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill={view === AppView.REPORT ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor">
                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

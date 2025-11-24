@@ -1,3 +1,4 @@
+
 import { Question, User } from './types';
 
 // Mock Users for Leaderboard
@@ -14,7 +15,8 @@ export const MOCK_USERS: User[] = [
     rankState: 1,
     rankCity: 1,
     isPremium: true,
-    questionsAnswered: 1500
+    questionsAnswered: 1500,
+    essayCredits: 5
   },
   {
     id: '2',
@@ -28,7 +30,8 @@ export const MOCK_USERS: User[] = [
     rankState: 1,
     rankCity: 1,
     isPremium: true,
-    questionsAnswered: 1400
+    questionsAnswered: 1400,
+    essayCredits: 2
   },
   {
     id: '3',
@@ -42,7 +45,8 @@ export const MOCK_USERS: User[] = [
     rankState: 1,
     rankCity: 1,
     isPremium: false,
-    questionsAnswered: 50
+    questionsAnswered: 50,
+    essayCredits: 0
   },
   {
     id: 'you',
@@ -56,7 +60,8 @@ export const MOCK_USERS: User[] = [
     rankState: 99,
     rankCity: 99,
     isPremium: false,
-    questionsAnswered: 0 // Start at 0
+    questionsAnswered: 0, // Start at 0
+    essayCredits: 0 // Start with 0 credits
   }
 ];
 

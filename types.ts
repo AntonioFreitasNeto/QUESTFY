@@ -1,3 +1,4 @@
+
 export interface Question {
   id: string;
   text: string;
@@ -23,6 +24,7 @@ export interface User {
   rankCity: number;
   isPremium: boolean;
   questionsAnswered: number;
+  essayCredits: number; // New: Pay-per-use credits
 }
 
 export enum LeaderboardScope {
@@ -36,7 +38,9 @@ export enum AppView {
   HOME = 'HOME',
   QUIZ = 'QUIZ',
   LEADERBOARD = 'LEADERBOARD',
-  REPORT = 'REPORT'
+  REPORT = 'REPORT',
+  STUDY_PLAN = 'STUDY_PLAN',
+  ESSAY = 'ESSAY'
 }
 
 export interface QuizSession {

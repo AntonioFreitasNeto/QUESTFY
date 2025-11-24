@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from './Button';
 import { User } from '../types';
@@ -8,9 +9,19 @@ interface HomeProps {
   onStartMini: () => void;
   onStartSubject: (subject: string | null) => void;
   onOpenReport: () => void;
+  onOpenStudyPlan: () => void;
+  onOpenEssay: () => void;
 }
 
-export const Home: React.FC<HomeProps> = ({ user, onStartGlobal, onStartMini, onOpenReport, onStartSubject }) => {
+export const Home: React.FC<HomeProps> = ({ 
+  user, 
+  onStartGlobal, 
+  onStartMini, 
+  onOpenReport, 
+  onStartSubject,
+  onOpenStudyPlan,
+  onOpenEssay
+}) => {
   
   const subjects = [
     { id: 'Linguagens', label: 'Linguagens e Códigos', icon: '📚', color: 'bg-red-50 text-red-600 border-red-100' },
@@ -48,7 +59,7 @@ export const Home: React.FC<HomeProps> = ({ user, onStartGlobal, onStartMini, on
                 </div>
                 {!user.isPremium && (
                     <div className="bg-orange-500/80 px-3 py-1.5 rounded-lg text-xs font-bold text-white border border-orange-400">
-                        {20 - user.questionsAnswered} grátis restantes
+                        {Math.max(0, 20 - user.questionsAnswered)} grátis restantes
                     </div>
                 )}
              </div>
@@ -61,7 +72,7 @@ export const Home: React.FC<HomeProps> = ({ user, onStartGlobal, onStartMini, on
       {/* AI Report Card */}
       <div 
         onClick={onOpenReport}
-        className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-4 mb-6 border border-blue-100 flex items-center justify-between cursor-pointer active:scale-95 transition-transform"
+        className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-4 mb-4 border border-blue-100 flex items-center justify-between cursor-pointer active:scale-95 transition-transform"
       >
         <div className="flex items-center gap-4">
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-xl shadow-sm">
@@ -69,14 +80,49 @@ export const Home: React.FC<HomeProps> = ({ user, onStartGlobal, onStartMini, on
             </div>
             <div>
                 <h4 className="font-bold text-blue-900 text-sm">Relatório IA Mentor</h4>
-                <p className="text-blue-700 text-xs">Análise de erros e plano de estudo</p>
+                <p className="text-blue-700 text-xs">Análise de erros e dicas</p>
             </div>
         </div>
         <div className="bg-white text-blue-600 p-2 rounded-full shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
         </div>
+      </div>
+
+      {/* NEW: Premium Features Grid */}
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        {/* Study Plan */}
+        <button 
+            onClick={onOpenStudyPlan}
+            className="p-3 bg-gradient-to-br from-purple-50 to-fuchsia-50 border border-purple-100 rounded-2xl flex flex-col gap-2 text-left active:scale-95 transition-transform relative overflow-hidden"
+        >
+            <div className="flex justify-between w-full items-start">
+                 <span className="text-2xl">📅</span>
+                 {!user.isPremium && <span className="text-xs bg-gray-900 text-white px-1.5 rounded">PRO</span>}
+            </div>
+            <div>
+                <h4 className="font-bold text-purple-900 text-sm leading-tight">Plano de Estudo</h4>
+                <p className="text-[10px] text-purple-700 mt-1">Adaptativo e focado nos erros</p>
+            </div>
+        </button>
+
+        {/* Essay Correction */}
+        <button 
+            onClick={onOpenEssay}
+            className="p-3 bg-gradient-to-br from-teal-50 to-emerald-50 border border-teal-100 rounded-2xl flex flex-col gap-2 text-left active:scale-95 transition-transform"
+        >
+            <div className="flex justify-between w-full items-start">
+                 <span className="text-2xl">📝</span>
+                 <div className="flex items-center bg-teal-200/50 px-1.5 rounded border border-teal-200">
+                    <span className="text-[10px] font-bold text-teal-800">{user.essayCredits} cre.</span>
+                 </div>
+            </div>
+             <div>
+                <h4 className="font-bold text-teal-900 text-sm leading-tight">Corrigir Redação</h4>
+                <p className="text-[10px] text-teal-700 mt-1">Correção IA por imagem</p>
+            </div>
+        </button>
       </div>
 
       <h3 className="font-bold text-lg text-gray-800 mb-4">Treinar por Área</h3>

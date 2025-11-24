@@ -1,3 +1,4 @@
+
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { Question, SubjectPerformance } from "../types";
 
@@ -75,7 +76,7 @@ export const generatePerformanceReport = async (stats: SubjectPerformance[]): Pr
             Forneça um relatório curto e direto (formato markdown) contendo:
             1. Pontos Fortes
             2. Pontos a Melhorar
-            3. Plano de Estudo prático para a próxima semana focado em subir a nota.
+            3. Dicas rápidas de estudo.
             
             Seja motivador, mas realista. Use emojis.
         `;
@@ -91,3 +92,71 @@ export const generatePerformanceReport = async (stats: SubjectPerformance[]): Pr
         return "Erro ao conectar com a IA Mentora. Tente novamente.";
     }
 }
+
+export const generateAdaptiveStudyPlan = async (subject: string, recentPerformanceContext: string): Promise<string> => {
+  try {
+    const prompt = `
+      Crie um Plano de Estudos Adaptativo de 5 dias focado exclusivamente em: ${subject}.
+      
+      Contexto do aluno (Erros recentes): ${recentPerformanceContext || "O aluno precisa de uma revisão geral e aprofundada."}
+      
+      O plano deve ser estruturado em Markdown e conter para cada dia:
+      - Tópico Principal (baseado nas fraquezas da área)
+      - Resumo Teórico Rápido (1 frase)
+      - Sugestão de exercício prático.
+      
+      No final, inclua uma mensagem motivacional curta.
+    `;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
+
+    return response.text || "Erro ao gerar plano de estudos.";
+  } catch (error) {
+    console.error(error);
+    return "Erro de conexão ao gerar plano.";
+  }
+};
+
+export const correctEssay = async (imageBase64: string, theme: string): Promise<string> => {
+  try {
+    const prompt = `
+      Você é um corretor oficial do ENEM. Corrija a redação presente nesta imagem.
+      O tema proposto foi: "${theme}".
+      
+      Sua saída deve ser estritamente em Markdown seguindo esta estrutura:
+      
+      # Nota Final: [0 a 1000]
+      
+      ## Análise por Competência
+      1. **Domínio da Escrita Formal:** [Nota 0-200] - [Breve comentário]
+      2. **Compreensão do Tema:** [Nota 0-200] - [Breve comentário]
+      3. **Organização das Ideias:** [Nota 0-200] - [Breve comentário]
+      4. **Coesão e Coerência:** [Nota 0-200] - [Breve comentário]
+      5. **Proposta de Intervenção:** [Nota 0-200] - [Breve comentário]
+      
+      ## Comentários Gerais
+      [Sua opinião construtiva sobre o que melhorar e o que explorar mais]
+    `;
+
+    // Strip header if present (e.g., "data:image/jpeg;base64,")
+    const cleanBase64 = imageBase64.split(',')[1] || imageBase64;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash", // Use flash for image analysis efficiency
+      contents: {
+        parts: [
+          { inlineData: { mimeType: "image/jpeg", data: cleanBase64 } },
+          { text: prompt }
+        ]
+      }
+    });
+
+    return response.text || "Não foi possível ler a redação. Tente uma foto mais clara.";
+  } catch (error) {
+    console.error("Erro na correção:", error);
+    return "Ocorreu um erro ao processar a imagem da redação. Verifique a qualidade da foto.";
+  }
+};
