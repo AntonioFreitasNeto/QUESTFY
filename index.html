@@ -10,33 +10,43 @@
         theme: {
           extend: {
             colors: {
-              primary: {
-                50: '#eff6ff',
-                100: '#dbeafe',
-                500: '#3b82f6',
-                600: '#2563eb',
-                700: '#1d4ed8',
-                900: '#1e3a8a',
-              },
-              accent: {
-                400: '#fbbf24', // Gold
-                500: '#f59e0b',
+              game: {
+                bg: '#0f172a', // Slate 900
+                card: '#1e293b', // Slate 800
+                ui: '#334155', // Slate 700
+                primary: '#6366f1', // Indigo 500
+                accent: '#06b6d4', // Cyan 500
+                gold: '#fbbf24',
               }
             },
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
+              sans: ['Outfit', 'sans-serif'],
             },
           },
         },
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-      body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+      body { font-family: 'Outfit', sans-serif; background-color: #0f172a; color: #f8fafc; }
       /* Custom scrollbar for webkit */
       ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+      ::-webkit-scrollbar-track { background: #0f172a; }
+      ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+      
+      .game-shadow {
+        box-shadow: 0 4px 0 0 rgba(0,0,0,0.3);
+      }
+      .game-shadow-hover:hover {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 0 rgba(0,0,0,0.3);
+      }
+      .game-shadow-active:active {
+        transform: translateY(4px);
+        box-shadow: 0 0 0 0 rgba(0,0,0,0.3);
+      }
     </style>
   <script type="importmap">
 {

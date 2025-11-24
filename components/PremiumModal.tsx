@@ -13,58 +13,58 @@ export const PremiumModal: React.FC<PremiumModalProps> = ({ isOpen, onClose, onU
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center px-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-      <div className="bg-white w-full max-w-sm rounded-3xl p-6 relative z-10 animate-fade-in-up">
+      <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="bg-slate-900 w-full max-w-sm rounded-3xl p-6 relative z-10 border-2 border-gold shadow-[0_0_50px_rgba(251,191,36,0.3)]">
         
         <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-3xl shadow-lg mx-auto mb-4 text-white">
+            <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-full flex items-center justify-center text-3xl shadow-lg mx-auto mb-4 text-white border-4 border-slate-900">
                 👑
             </div>
-            <h2 className="text-2xl font-black text-gray-900 mb-2">Desbloqueie o Master</h2>
+            <h2 className="text-2xl font-black text-white mb-2 uppercase italic">Season Pass</h2>
             
             {reason === 'LIMIT_REACHED' && (
-                <p className="text-red-500 font-bold bg-red-50 py-2 rounded-lg mb-2">
-                    Você atingiu o limite de 20 questões grátis.
+                <p className="text-red-400 font-bold bg-red-900/20 border border-red-500/50 py-2 rounded mb-2 text-xs uppercase">
+                    Stamina Depleted (Daily Limit Reached)
                 </p>
             )}
              {reason === 'REPORT_LOCKED' && (
-                <p className="text-blue-500 font-bold bg-blue-50 py-2 rounded-lg mb-2">
-                    O Relatório IA é exclusivo para assinantes.
+                <p className="text-cyan-400 font-bold bg-cyan-900/20 border border-cyan-500/50 py-2 rounded mb-2 text-xs uppercase">
+                    Unlock Premium Intel
                 </p>
             )}
 
-            <p className="text-gray-500 text-sm">
-                Garanta sua aprovação no ENEM com ferramentas de elite.
+            <p className="text-slate-400 text-sm font-mono">
+                Upgrade to Elite Status.
             </p>
         </div>
 
         <div className="space-y-3 mb-8">
             <div className="flex items-center gap-3">
-                <span className="text-green-500 text-xl">✓</span>
-                <span className="text-gray-700">Questões ilimitadas</span>
+                <span className="text-gold text-xl">✓</span>
+                <span className="text-slate-300 text-sm">Infinite Stamina (Questions)</span>
             </div>
             <div className="flex items-center gap-3">
-                <span className="text-green-500 text-xl">✓</span>
-                <span className="text-gray-700">Relatório de IA Mentor</span>
+                <span className="text-gold text-xl">✓</span>
+                <span className="text-slate-300 text-sm">AI Mentor Access</span>
             </div>
             <div className="flex items-center gap-3">
-                <span className="text-green-500 text-xl">✓</span>
-                <span className="text-gray-700">Ranking Estadual Exclusivo</span>
+                <span className="text-gold text-xl">✓</span>
+                <span className="text-slate-300 text-sm">Elite Leaderboard</span>
             </div>
         </div>
 
-        <div className="bg-primary-50 p-4 rounded-xl text-center mb-6 border border-primary-100">
-            <span className="block text-gray-500 text-xs line-through">R$ 29,90</span>
-            <span className="block text-primary-700 font-black text-3xl">R$ 19,90</span>
-            <span className="text-primary-600 text-xs font-bold">/mês</span>
+        <div className="bg-slate-800 p-4 rounded-xl text-center mb-6 border border-slate-700">
+            <span className="block text-slate-500 text-xs line-through">$ 29,90</span>
+            <span className="block text-gold font-black text-3xl shadow-gold">$ 19,90</span>
+            <span className="text-slate-400 text-xs font-bold uppercase">/ Month</span>
         </div>
 
         <div className="space-y-3">
-            <Button fullWidth onClick={onUpgrade} variant="primary" className="bg-gradient-to-r from-accent-500 to-orange-500 hover:from-accent-600 hover:to-orange-600 text-white shadow-orange-200">
-                Assinar Premium Agora
+            <Button fullWidth onClick={onUpgrade} variant="gold">
+                Unlock Elite Pass
             </Button>
             <Button fullWidth onClick={onClose} variant="secondary">
-                Talvez Depois
+                Later
             </Button>
         </div>
       </div>
